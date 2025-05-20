@@ -25,7 +25,7 @@ products.forEach((product) => {
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class="js-quantity-selector-${product.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -52,7 +52,13 @@ products.forEach((product) => {
           </button>
         </div>
   `;
+  //data-set atribut
+  // koristimo ga da prenesemo neki podatak preko HTML
+  // ovde prenosimo product.id
+  //kljuc se konvertuje iz kebab u camel case product-id => productId
 });
+
+
 
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
@@ -62,6 +68,8 @@ document.querySelectorAll('.js-add-to-cart')
    const productId = button.dataset.productId; 
   
    let matchingItem;
+   let selectElement = document.querySelector(`.js-quantity-selector-${productId}`);
+   let selectQuantity = Number(selectElement.value);
 
     cart.forEach((item) => {
       if(productId === item.productId){
@@ -69,18 +77,24 @@ document.querySelectorAll('.js-add-to-cart')
       } 
     });
     if(matchingItem){
-      matchingItem.quantity += 1;
+      matchingItem.quantity += selectQuantity;
     }else{
       cart.push({
         productId: productId,
-        quantity: 1
+        quantity: selectQuantity
       });
     }
     let cartQuantity = 0;
-
+    
+    
+    
+    
     cart.forEach((item) => {
       cartQuantity += item.quantity;
     });
+    
+    
     document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+    console.log(cart);
   });
 });
