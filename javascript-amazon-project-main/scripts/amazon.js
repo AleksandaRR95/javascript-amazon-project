@@ -41,7 +41,7 @@ products.forEach((product) => {
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart js-added-to-cart-${product.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -61,7 +61,8 @@ products.forEach((product) => {
 
 
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
-
+//cuvamo id-jeve timeout-a za svako dugme u objekat
+const  addedMessageTimeouts = {};
 document.querySelectorAll('.js-add-to-cart')
 .forEach((button) => {
   button.addEventListener('click', () => {
@@ -69,7 +70,7 @@ document.querySelectorAll('.js-add-to-cart')
   
    let matchingItem;
    let selectElement = document.querySelector(`.js-quantity-selector-${productId}`);
-   let selectQuantity = Number(selectElement.value);
+   let quantity = Number(selectElement.value);
 
     cart.forEach((item) => {
       if(productId === item.productId){
@@ -77,11 +78,13 @@ document.querySelectorAll('.js-add-to-cart')
       } 
     });
     if(matchingItem){
-      matchingItem.quantity += selectQuantity;
+      matchingItem.quantity += quantity;
     }else{
       cart.push({
-        productId: productId,
-        quantity: selectQuantity
+        //productId: productId,
+        //quantity: quantity
+        productId, 
+        quantity
       });
     }
     let cartQuantity = 0;
@@ -96,5 +99,28 @@ document.querySelectorAll('.js-add-to-cart')
     
     document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
     console.log(cart);
+
+    //showing text added to cart
+    const addedElement = document.querySelector(`.js-added-to-cart-${productId}`);
+    // dodajemo klasu da se prikaze "Added"
+    addedElement.classList.add('add-to-cart-visible');
+    // za previousTimeoutId postavljamo productId: ?
+    const previuosTimeoutId = addedMessageTimeouts[productId];
+    //proveravamo da li postoji neki stari timeoutId
+    //ako postoji brisemo ga
+    if(previuosTimeoutId){
+      clearTimeout(previuosTimeoutId);
+    }
+    //postavljamo klasu za div sa tekstom
+    // opacity : 1
+    const timeoutId = setTimeout(() => {
+      addedElement.classList.remove('add-to-cart-visible');
+
+    }, 2000);
+
+    //dodajemo u objekat timeoutId pod kljucem productId
+    //e.g.. id12847e9-5323-403f-b7cf-57fde044a955 : 25
+    addedMessageTimeouts[productId] = timeoutId;
   });
+
 });
