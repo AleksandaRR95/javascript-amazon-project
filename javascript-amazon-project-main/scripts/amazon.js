@@ -111,8 +111,8 @@ document.querySelectorAll('.js-add-to-cart')
     if(previuosTimeoutId){
       clearTimeout(previuosTimeoutId);
     }
-    //postavljamo klasu za div sa tekstom
-    // opacity : 1
+    //brisemo klasu za div sa tekstom
+    
     const timeoutId = setTimeout(() => {
       addedElement.classList.remove('add-to-cart-visible');
 
