@@ -1,5 +1,5 @@
 
-import { cart } from "../data/cart.js";
+import { cart, addToCart } from "../data/cart.js";
 import {products} from "../data/products.js"
 
 let productsHTML = '';
@@ -61,49 +61,19 @@ products.forEach((product) => {
   //kljuc se konvertuje iz kebab u camel case product-id => productId
 });
 
-
-
-document.querySelector('.js-products-grid').innerHTML = productsHTML;
-//cuvamo id-jeve timeout-a za svako dugme u objekat
-const  addedMessageTimeouts = {};
-document.querySelectorAll('.js-add-to-cart')
-.forEach((button) => {
-  button.addEventListener('click', () => {
-   const productId = button.dataset.productId; 
-  
-   let matchingItem;
-   let selectElement = document.querySelector(`.js-quantity-selector-${productId}`);
-   let quantity = Number(selectElement.value);
-
-    cart.forEach((item) => {
-      if(productId === item.productId){
-        matchingItem = item;
-      } 
+function updateCartQuantity(){
+  let cartQuantity = 0;
+    
+    cart.forEach((cartItem) => {
+      cartQuantity += cartItem.quantity;
     });
-    if(matchingItem){
-      matchingItem.quantity += quantity;
-    }else{
-      cart.push({
-        //productId: productId,
-        //quantity: quantity
-        productId, 
-        quantity
-      });
-    }
-    let cartQuantity = 0;
-    
-    
-    
-    
-    cart.forEach((item) => {
-      cartQuantity += item.quantity;
-    });
-    
     
     document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
     console.log(cart);
-
-    //showing text added to cart
+}
+function addToCartTextShowing(button){
+  const productId = button.dataset.productId; 
+   //showing text added to cart
     const addedElement = document.querySelector(`.js-added-to-cart-${productId}`);
     // dodajemo klasu da se prikaze "Added"
     addedElement.classList.add('add-to-cart-visible');
@@ -121,6 +91,16 @@ document.querySelectorAll('.js-add-to-cart')
     //dodajemo u objekat timeoutId pod kljucem productId
     //e.g.. id12847e9-5323-403f-b7cf-57fde044a955 : 25
     addedMessageTimeouts[productId] = timeoutId;
-  });
+}
 
+document.querySelector('.js-products-grid').innerHTML = productsHTML;
+//cuvamo id-jeve timeout-a za svako dugme u objekat
+const  addedMessageTimeouts = {};
+document.querySelectorAll('.js-add-to-cart')
+.forEach((button) => {
+  button.addEventListener('click', () => {
+   addToCart(button);
+   updateCartQuantity();
+   addToCartTextShowing(button);
+  });
 });
