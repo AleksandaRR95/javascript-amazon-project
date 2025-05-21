@@ -1,4 +1,6 @@
 
+import { cart } from "../data/cart.js";
+
 let productsHTML = '';
 
 products.forEach((product) => {
@@ -112,12 +114,9 @@ document.querySelectorAll('.js-add-to-cart')
       clearTimeout(previuosTimeoutId);
     }
     //brisemo klasu za div sa tekstom
-    
     const timeoutId = setTimeout(() => {
       addedElement.classList.remove('add-to-cart-visible');
-
     }, 2000);
-
     //dodajemo u objekat timeoutId pod kljucem productId
     //e.g.. id12847e9-5323-403f-b7cf-57fde044a955 : 25
     addedMessageTimeouts[productId] = timeoutId;
