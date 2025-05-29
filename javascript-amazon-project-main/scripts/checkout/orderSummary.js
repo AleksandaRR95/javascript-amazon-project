@@ -4,6 +4,7 @@ import {
   calculateCartQuantity,
   updateQuantity,
   updateDeliveryOption,
+  updateCartQuantity
 } from "../../data/cart.js";
 import { products, getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
@@ -109,11 +110,11 @@ export function renderOrderSummary(){
   document.querySelectorAll(".js-update-quantity-link").forEach((update) => {
     update.addEventListener("click", () => {
       const productId = update.dataset.productId;
-
       document
         .querySelector(`.js-cart-item-container-${productId}`)
         .classList.add("is-editing-quantity");
     });
+    
   });
   //making "save" interactive
   //by clicking save we take input value, add new quantity to a product
@@ -172,11 +173,6 @@ export function renderOrderSummary(){
     return html;
   }
 
-  function updateCartQuantity() {
-    const quantity = calculateCartQuantity();
-    document.querySelector(
-      ".js-return-to-home-link"
-    ).innerHTML = `${quantity} items`;
-  }
+  
   renderPaymentSummary();
 }
