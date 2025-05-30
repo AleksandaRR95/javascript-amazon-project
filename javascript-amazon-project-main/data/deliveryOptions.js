@@ -25,11 +25,18 @@ export function getDeliveryOption(deliveryOptionId){
     return deliveryOption || deliveryOptions[0];
 }
 
-export function calculateDeliveryDate(deliveryOption){
-  const today = dayjs();
+export function calculateDeliveryDate(deliveryOption) {
+  let date = dayjs();
+  let remainingDays = deliveryOption.deliveryDays;
 
-    const deliveryDate = today.add(deliveryOption.deliveryDays, "day");
-    const dateString = deliveryDate.format("dddd, MMMM, D");
-  
-    return dateString;      
+  while (remainingDays > 0) {
+    date = date.add(1, 'day');
+    const day = date.day(); // 0 = Sunday, 6 = Saturday
+    if (day !== 0 && day !== 6) {
+      remainingDays--;
+    }
+  }
+
+  const formatted = date.format('dddd, MMMM D');
+  return formatted;
 }
