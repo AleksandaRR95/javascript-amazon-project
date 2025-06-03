@@ -1,6 +1,11 @@
 import { renderPaymentSummary } from "../scripts/checkout/paymentSummary.js";
 
-export let cart = JSON.parse(localStorage.getItem('cart')) ;  
+export let cart;
+
+loadFromStorage();
+
+export function loadFromStorage(){
+  cart = JSON.parse(localStorage.getItem('cart')) ;  
 
 if(!cart){
   cart = [{
@@ -13,6 +18,8 @@ if(!cart){
   deliveryOptionId: '2'
 }];
 }
+}
+
 //function for updating product quantity
 export function updateQuantity(productId, newQuantity){
   cart.forEach((cartItem) => {
@@ -31,11 +38,19 @@ export function addToCart (button){
 
   const productId = button.dataset.productId; 
 
-   let matchingItem;
+   
    let selectElement = document.querySelector(`.js-quantity-selector-${productId}`);
    let quantity = Number(selectElement.value);
 
-    cart.forEach((cartItem) => {
+   addProductToCart(productId, quantity);
+    
+   saveToStorage();
+}
+
+export function addProductToCart(productId, quantity){
+  let matchingItem;
+
+  cart.forEach((cartItem) => {
       if(productId === cartItem.productId){
         matchingItem = cartItem;
       } 
@@ -51,7 +66,6 @@ export function addToCart (button){
         deliveryOptionId: '1'
       });
     }
-   saveToStorage();
 }
 export function removeFromCart(productId){
   const newCart = [];
