@@ -94,10 +94,12 @@ describe('test suite: update delivery options', () => {
  
   
   it('updates product delivery option', () => {
-    updateDeliveryOption(productId1, '3');
+    updateDeliveryOption(productId1, '4');
     updateDeliveryOption(productId2, '3');
-    expect(cart[0].deliveryOptionId).toEqual('3');
+    updateDeliveryOption(productId3, '2');
+    expect(cart[0].deliveryOptionId).toEqual('1');
     expect(cart[1].deliveryOptionId).toEqual('3');
-    expect(localStorage.setItem).toHaveBeenCalledTimes(2);
+    expect(cart[2]).toEqual(undefined);
+    expect(localStorage.setItem).toHaveBeenCalledTimes(1);
   });
 });
