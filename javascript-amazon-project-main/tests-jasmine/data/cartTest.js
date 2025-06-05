@@ -41,7 +41,7 @@ describe('test suite: removes product from cart', () => {
   const productId2 = '15b6fc6f-327a-4ec4-896f-486349e85a3d';
   const productId3= '83d4ca15-0f35-48f5-b7a3-1ea210004f2e';
   beforeEach(() => {
-       spyOn(localStorage, 'setItem');
+    spyOn(localStorage, 'setItem');
     spyOn(localStorage, 'getItem').and.callFake(() => {
       return JSON.stringify([
         {
@@ -55,6 +55,7 @@ describe('test suite: removes product from cart', () => {
         }
       ])
     });
+    loadFromStorage();
   });
 
     it('removes product that is in cart', () => {
